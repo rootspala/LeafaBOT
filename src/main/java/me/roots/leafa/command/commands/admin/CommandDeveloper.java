@@ -7,28 +7,21 @@ public class CommandDeveloper implements Command {
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
-        return true;
+        // Secret
     }
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        switch (args[0]) {
-            case "restart":
-                event.getAuthor().openPrivateChannel().complete().sendMessage(":white_check_mark: Reiniciando o bot... :white_check_mark:").queue();
-                break;
-            default:
-                event.getAuthor().openPrivateChannel().complete().sendMessage(":x: Oops... Você precisa inserir algum argumento para utilizar esse comando... :x:").queue();
-                break;
-        }
+        // Secret
     }
 
     @Override
     public void executed(boolean sucessful, MessageReceivedEvent event) {
-
+        // Secret
     }
 
     @Override
     public String help() {
-        return null;
+        // Secret
     }
 }
