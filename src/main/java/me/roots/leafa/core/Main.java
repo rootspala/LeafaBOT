@@ -1,42 +1,49 @@
 package me.roots.leafa.core;
 
 import me.roots.leafa.command.commands.admin.CommandDeveloper;
-import me.roots.leafa.command.managers.CommandHandler;
-import me.roots.leafa.command.managers.CommandListener;
 import me.roots.leafa.command.commands.info.CommandBotInfo;
+import me.roots.leafa.command.pivaman.BotClass;
+import me.roots.leafa.command.pivaman.CommandHandler;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import me.roots.leafa.utils.BotClass;
 
 import javax.security.auth.login.LoginException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
 
-    public static JDABuilder jdaBuilder;
+    public static JDA jda;
 
     public static void main(String[] args){
-        jdaBuilder = new JDABuilder(AccountType.BOT);
+        JDABuilder jdaBuilder = new JDABuilder(AccountType.BOT);
+
         jdaBuilder.setToken(BotClass.TOKEN);
         jdaBuilder.setAutoReconnect(true);
-        addCommands();
-        addListeners();
+
+        addCommands(jdaBuilder);
+        addListeners(jdaBuilder);
+
         try{
-            JDA jda = jdaBuilder.buildBlocking();
+            jda = jdaBuilder.build();
         }catch(LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void addCommands() {
-        CommandHandler.commands.put("botinfo", new CommandBotInfo());
-        CommandHandler.commands.put("dev", new CommandDeveloper());
+    public static void addCommands(JDABuilder jdaBuilder) {
+        CommandHandler.registeredCmd = new ArrayList<>();
+
+        CommandHandler.add(new CommandDeveloper());
+        CommandHandler.add(new CommandBotInfo());
+
+        //TODO comentei a linha já que você provavelmente não vai mais usar o Handler antigo
+        //CommandHandler.commands.put("botinfo", new CommandBotInfo());
     }
 
-    public static void addListeners() {
-        jdaBuilder.addEventListener(new CommandListener());
+    public static void addListeners(JDABuilder jdaBuilder) {
+        //jdaBuilder.addEventListener(new CommandListener());
+        jdaBuilder.addEventListener(new CommandHandler());
     }
-
 }
