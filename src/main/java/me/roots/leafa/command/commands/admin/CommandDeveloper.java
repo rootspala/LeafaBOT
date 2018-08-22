@@ -1,37 +1,34 @@
 package me.roots.leafa.command.commands.admin;
 
-import me.roots.leafa.command.managers.LeafaCommand;
+import me.roots.leafa.command.managers.Command;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class CommandDeveloper extends LeafaCommand {
+public class CommandDeveloper implements Command {
 
-    public CommandDeveloper() {
-        super(
-                "dev",
-                "BOT_OWNER",
-                "Um comando para o desenvolvedor da Leafa."
-        );
+    @Override
+    public boolean called(String[] args, MessageReceivedEvent event) {
+        return true;
     }
 
     @Override
-    public void run(MessageReceivedEvent event, String[] args) {
-        if (!event.getAuthor().getDiscriminator().equalsIgnoreCase("3156")) {
-            event.getChannel().sendMessage(":x: Você não tem a permissão: **BOT_OWNER** para executar este comando :x:").queue();
-            return;
-        }
+    public void action(String[] args, MessageReceivedEvent event) {
         switch (args[0]) {
-            case "reload":
-                // TODO code.
+            case "restart":
                 event.getAuthor().openPrivateChannel().complete().sendMessage(":white_check_mark: Reiniciando o bot... :white_check_mark:").queue();
                 break;
-            case "stop":
-                // TODO code.
-                event.getAuthor().openPrivateChannel().complete().sendMessage(":white_check_mark: Parando o bot... :white_check_mark:").queue();
-                break;
             default:
-                String arguments = "**reload, stop**";
-                event.getAuthor().openPrivateChannel().complete().sendMessage(":x: Use os seguintes argumentos para esse comando: " + arguments).queue();
+                event.getAuthor().openPrivateChannel().complete().sendMessage(":x: Oops... Você precisa inserir algum argumento para utilizar esse comando... :x:").queue();
                 break;
         }
+    }
+
+    @Override
+    public void executed(boolean sucessful, MessageReceivedEvent event) {
+
+    }
+
+    @Override
+    public String help() {
+        return null;
     }
 }
