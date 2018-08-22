@@ -1,23 +1,19 @@
 package me.roots.leafa.command.commands.info;
 
-import me.roots.leafa.command.managers.Command;
-import me.roots.leafa.utils.BotClass;
+import me.roots.leafa.command.managers.LeafaCommand;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
 
-public class CommandBotInfo implements Command {
+public class CommandBotInfo extends LeafaCommand {
 
-
-    @Override
-    public boolean called(String[] args, MessageReceivedEvent event) {
-        return false;
+    public CommandBotInfo(String name, String permission, String description) {
+        super("botinfo", null, "Um comando para ver as informações da BOT.");
     }
-
     @Override
-    public void action(String[] args, MessageReceivedEvent event) {
+    public void run(MessageReceivedEvent event, String[] args) {
         User user = event.getAuthor();
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -32,15 +28,4 @@ public class CommandBotInfo implements Command {
         embedBuilder.setFooter("Em breve mais informações...", user.getAvatarUrl());
         event.getChannel().sendMessage(embedBuilder.build()).queue();
     }
-
-    @Override
-    public void executed(boolean sucessful, MessageReceivedEvent event) {
-
-    }
-
-    @Override
-    public String help() {
-        return null;
-    }
-
 }

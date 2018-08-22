@@ -36,8 +36,8 @@ public class Main {
     public static void addCommands(JDABuilder jdaBuilder) {
         CommandHandler.registeredCmd = new ArrayList<>();
 
-        CommandHandler.add(new CommandDeveloper());
-        CommandHandler.add(new CommandBotInfo());
+        // CommandHandler.add(new CommandDeveloper());
+        // CommandHandler.add(new CommandBotInfo());
         CommandHandler.add(new CommandTest());
     }
 
