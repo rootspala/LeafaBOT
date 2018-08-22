@@ -1,27 +1,44 @@
 package me.roots.leafa.command.managers;
 
-import java.util.HashMap;
+import me.roots.leafa.utils.BotClass;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-public class CommandHandler {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public static final CommandParser parser = new CommandParser();
-    public static HashMap<String, Command> commands = new HashMap<>();
+public class CommandHandler extends ListenerAdapter {
 
-    public static void handleCommand(CommandParser.commandContainer cmd) {
+    public static List<LeafaCommand> registeredCmd;
 
-        if (commands.containsKey(cmd.invoke)) {
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
+        if (event.getMessage().getContentDisplay().startsWith(BotClass.PREFIX)) {
+            List<String> commandBody = new ArrayList<>(Arrays.asList(event.getMessage().getContentDisplay().replace(BotClass.PREFIX,
+                    "").split(" ")));
 
-            boolean safe = commands.get(cmd.invoke).called(cmd.args, cmd.event);
+            List<LeafaCommand> correspondingCmds = registeredCmd.stream()
+                    .filter(cmd -> cmd.getName().equalsIgnoreCase(commandBody.get(0)))
+                    .collect(Collectors.toList());
 
-            if (!safe) {
-                commands.get(cmd.invoke).action(cmd.args, cmd.event);
-                commands.get(cmd.invoke).executed(safe, cmd.event);
-            } else {
-                commands.get(cmd.invoke).executed(safe, cmd.event);
+            if (correspondingCmds.isEmpty()) {
+                return;
             }
 
-        }
+            LeafaCommand command = registeredCmd.get(0);
 
+            //TODO aqui você faz a verificação de permissão, abaixo está um exemplo de como fazer
+
+            commandBody.remove(0);
+            command.run(event, commandBody.toArray(new String[commandBody.size()]));
+        }
+    }
+
+    public static void add(LeafaCommand cmd) {
+        registeredCmd.add(cmd);
     }
 
 }
